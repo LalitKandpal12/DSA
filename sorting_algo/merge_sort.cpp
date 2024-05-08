@@ -71,8 +71,8 @@ void traverse (int *arr, int size) {
 }
 
 int main () {
-	int size = 9;
-	int arr[size] = { 2, 6,3,10, 4,8,2,9,11};
+	int size = 10;
+	int arr[size] = { 2, 6,3,10, 4,8,2,9,11,5};
 	//int arr[size] = {3,7,1,6};
 	//int arr2[size] = {6,2,1,5};
 	//int * newArr = merge(arr,size,arr2,size);
