@@ -42,7 +42,14 @@ class BinaryTree {
 				recursiveTraverse2(node -> right);
 			}
 		}
+	}
 
+	Node* inorderSucessor(Node*position){
+		Node*temp = position -> right;
+		while(temp->left != NULL){
+			temp = temp -> left;
+		}	
+		return temp;
 	}
 
 	public:
@@ -64,6 +71,61 @@ class BinaryTree {
 					break;
 				} else {
 					ptr = ptr -> right;
+				}
+			}
+		}
+	}
+
+	void del(int value) {
+		Node *ptr = root;
+		std:: cout << "inside function" << std:: endl;
+		Node *parent = root;
+		std::string mode = "";
+		while(ptr != NULL){
+			
+			std:: cout << "while" << std:: endl;
+			if (value == ptr -> value){
+				
+				std:: cout << "if" << std:: endl;
+				if (ptr -> left == NULL && ptr -> right == NULL){
+					std::cout << "first" << std::endl;
+					delete(ptr);
+				} else if (ptr -> left == NULL || ptr -> right == NULL){
+					
+					std::cout << "second" << std::endl;
+					if (ptr -> left == NULL){
+						if (mode == "left"){
+							parent -> left = ptr -> right;
+						} else {
+							parent -> right = ptr -> right;
+						}
+					} else {
+						if (mode == "left"){
+							parent -> left = ptr -> left;
+						}else {
+							parent -> right = ptr -> left;
+						}
+					}
+					delete(ptr);
+				} else {
+					std:: cout << "thrid" << std::endl;
+					Node *inorderSucessorVar = inorderSucessor(ptr);
+					std:: cout << inorderSucessorVar -> value << std:: endl;
+					std:: swap(inorderSucessorVar->value,ptr->value);
+					
+					std:: cout << inorderSucessorVar -> value << std:: endl;
+					del(inorderSucessorVar->value);
+					//delete(inorderSucessorVar);
+				}
+				break;
+			} else {
+					parent = ptr;
+				if (ptr -> value > value){
+					ptr = ptr -> left;
+					mode = "left";
+				} else {
+					ptr  = ptr ->right;
+					mode = "right";
 				}
 			}
 		}
@@ -117,15 +179,17 @@ class BinaryTree {
 
 
 int main () {
-	BinaryTree tree = BinaryTree(5);
-	tree.insert(3);
-	tree.insert(6);
-	tree.insert(9);
-	tree.insert(2);
+	BinaryTree tree = BinaryTree(10);
+	tree.insert(5);
+	tree.insert(17);
 	tree.insert(4);
-	tree.insert(13);
-
-	tree.traverse();
+	tree.insert(6);
+	tree.insert(15);
+	tree.insert(18);
+	tree.insert(16);
 	tree.traverse2();
-	std:: cout << "min: " << tree.min() << " max: " << tree.max() << " search: " << tree.search(3) << std:: endl;
+	tree.del(17);
+	//tree.traverse();
+	tree.traverse2();
+	//std:: cout << "min: " << tree.min() << " max: " << tree.max() << " search: " << tree.search(3) << std:: endl;
 }
