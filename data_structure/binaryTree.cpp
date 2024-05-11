@@ -78,21 +78,11 @@ class BinaryTree {
 
 	void del(int value) {
 		Node *ptr = root;
-		std:: cout << "inside function" << std:: endl;
 		Node *parent = root;
 		std::string mode = "";
 		while(ptr != NULL){
-			
-			std:: cout << "while" << std:: endl;
 			if (value == ptr -> value){
-				
-				std:: cout << "if" << std:: endl;
-				if (ptr -> left == NULL && ptr -> right == NULL){
-					std::cout << "first" << std::endl;
-					delete(ptr);
-				} else if (ptr -> left == NULL || ptr -> right == NULL){
-					
-					std::cout << "second" << std::endl;
+				if (ptr -> left == NULL || ptr -> right == NULL){
 					if (ptr -> left == NULL){
 						if (mode == "left"){
 							parent -> left = ptr -> right;
@@ -108,14 +98,23 @@ class BinaryTree {
 					}
 					delete(ptr);
 				} else {
-					std:: cout << "thrid" << std::endl;
-					Node *inorderSucessorVar = inorderSucessor(ptr);
-					std:: cout << inorderSucessorVar -> value << std:: endl;
+					Node*inorderSucessorVar = ptr -> right;
+					Node*succesorParent = ptr;
+        			while(inorderSucessorVar->left != NULL){
+						succesorParent = inorderSucessorVar;
+            			inorderSucessorVar = inorderSucessorVar -> left;
+        			}
 					std:: swap(inorderSucessorVar->value,ptr->value);
-					
-					std:: cout << inorderSucessorVar -> value << std:: endl;
-					del(inorderSucessorVar->value);
-					//delete(inorderSucessorVar);
+					if (inorderSucessorVar -> right != NULL){
+						if (inorderSucessorVar -> value == succesorParent -> left -> value){
+							succesorParent -> left = inorderSucessorVar -> right;
+						} else {
+							succesorParent -> right = inorderSucessorVar -> right;
+						}
+					} else {
+						succesorParent -> right = NULL;
+					}
+					delete(inorderSucessorVar);
 				}
 				break;
 			} else {
@@ -187,8 +186,9 @@ int main () {
 	tree.insert(15);
 	tree.insert(18);
 	tree.insert(16);
+	tree.insert(19);
 	tree.traverse2();
-	tree.del(17);
+	tree.del(10);
 	//tree.traverse();
 	tree.traverse2();
 	//std:: cout << "min: " << tree.min() << " max: " << tree.max() << " search: " << tree.search(3) << std:: endl;
